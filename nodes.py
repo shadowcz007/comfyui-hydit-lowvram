@@ -97,26 +97,26 @@ class DiffusersCheckpointLoader:
         return out
 
 
-class DiffusersVAELoader:
-    def __init__(self):
-        self.tmp_dir = folder_paths.get_temp_directory()
-        self.dtype = torch.float32
+# class DiffusersVAELoader:
+#     def __init__(self):
+#         self.tmp_dir = folder_paths.get_temp_directory()
+#         self.dtype = torch.float32
 
-    @classmethod
-    def INPUT_TYPES(s):
-        return {"required": {
-            "model_name": (folder_paths.get_filename_list("vae"),), }}
+#     @classmethod
+#     def INPUT_TYPES(s):
+#         return {"required": {
+#             "model_name": (folder_paths.get_filename_list("vae"),), }}
 
-    RETURN_TYPES = ("VAE",)
+#     RETURN_TYPES = ("VAE",)
 
-    FUNCTION = "load_vae"
+#     FUNCTION = "load_vae"
 
-    CATEGORY = "Diffusers"
+#     CATEGORY = "Diffusers"
 
-    def load_vae(self, model_name):
-        MODEL_PATH = folder_paths.get_full_path("vae", model_name)
-        out = load_vae(MODEL_PATH)
-        return out
+#     def load_vae(self, model_name):
+#         MODEL_PATH = folder_paths.get_full_path("vae", model_name)
+#         out = load_vae(MODEL_PATH)
+#         return out
 
 
 class DiffusersLoraLoader:
@@ -388,7 +388,7 @@ NODE_CLASS_MAPPINGS = {
     "DiffusersClipTextEncode": DiffusersClipTextEncode,
     "DiffusersSampler": DiffusersSampler,
     "DiffusersCheckpointLoader": DiffusersCheckpointLoader,
-    "DiffusersVAELoader": DiffusersVAELoader,
+    # "DiffusersVAELoader": DiffusersVAELoader,
     "DiffusersCLIPLoader": DiffusersCLIPLoader,
     "DiffusersControlNetLoader": DiffusersControlNetLoader,
     "DiffusersLoraLoader": DiffusersLoraLoader
@@ -401,7 +401,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "DiffusersClipTextEncode": "HunYuan Clip Text Encode",
     "DiffusersSampler": "HunYuan Sampler",
     "DiffusersCheckpointLoader": "HunYuan Checkpoint Loader",
-    "DiffusersVAELoader": "HunYuan VAE Loader",
+    # "DiffusersVAELoader": "HunYuan VAE Loader",
     "DiffusersCLIPLoader": "HunYuan CLIP Loader",
     "DiffusersControlNetLoader": "HunYuan ControlNet Loader",
     "DiffusersLoraLoader": "HunYuan Lora Loader",
