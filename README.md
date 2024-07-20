@@ -1,6 +1,5 @@
 # comfyui-hydit
-The ComfyUI code is under review in the official repository. Meanwhile, a temporary version is available below for immediate community use.
-We welcome users to try our workflow and appreciate any inquiries or suggestions.
+The ComfyUI code is under Test
 
 
 ## Overview
