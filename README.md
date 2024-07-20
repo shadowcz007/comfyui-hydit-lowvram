@@ -1,5 +1,6 @@
 # comfyui-hydit
 The ComfyUI code is under Test
+主要适配 lowvram 
 
 
 ## Overview
