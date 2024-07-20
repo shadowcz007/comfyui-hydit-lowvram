@@ -75,15 +75,19 @@ class CLIP:
         #self.cond_stage_model.reset_clip_options()
         self.load_model()
         attention_mask = tokens['attention_mask'].to(self.device)
+
+        cond_stage_model=self.cond_stage_model.to(self.device)
+        embedder_t5=self.embedder_t5.to(self.device)
+        
         with torch.no_grad():
-            prompt_embeds = self.cond_stage_model(
+            prompt_embeds = cond_stage_model(
                     tokens['text_input_ids'].to(self.device),
                     attention_mask=attention_mask
                 )
             prompt_embeds = prompt_embeds[0]
         t5_attention_mask = tokens['t5_attention_mask'].to(self.device)
         with torch.no_grad():
-            t5_prompt_cond = self.embedder_t5(
+            t5_prompt_cond = embedder_t5(
                     tokens['t5_text_input_ids'].to(self.device),
                     attention_mask=t5_attention_mask
                 )
