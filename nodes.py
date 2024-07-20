@@ -61,7 +61,7 @@ class DiffusersPipelineLoader:
 
     FUNCTION = "create_pipeline"
 
-    CATEGORY = "Diffusers"
+    CATEGORY = "HyDiT"
 
     def create_pipeline(self, pipeline_folder_name, lora=None):
         if lora != None:
@@ -89,7 +89,7 @@ class DiffusersCheckpointLoader:
 
     FUNCTION = "load_checkpoint"
 
-    CATEGORY = "Diffusers"
+    CATEGORY = "HyDiT"
 
     def load_checkpoint(self, model_name, version):
         MODEL_PATH = folder_paths.get_full_path("checkpoints", model_name)
@@ -111,7 +111,7 @@ class DiffusersCheckpointLoader:
 
 #     FUNCTION = "load_vae"
 
-#     CATEGORY = "Diffusers"
+#     CATEGORY = "HyDiT"
 
 #     def load_vae(self, model_name):
 #         MODEL_PATH = folder_paths.get_full_path("vae", model_name)
@@ -132,7 +132,7 @@ class DiffusersLoraLoader:
 
     FUNCTION = "load_lora"
 
-    CATEGORY = "Diffusers"
+    CATEGORY = "HyDiT"
 
     def load_lora(self, lora_name):
         MODEL_PATH = os.path.join(LORA_PATH, lora_name)
@@ -154,7 +154,7 @@ class DiffusersCLIPLoader:
 
     FUNCTION = "load_clip"
 
-    CATEGORY = "Diffusers"
+    CATEGORY = "HyDiT"
 
     def load_clip(self, text_encoder_path, t5_text_encoder_path):
         CLIP_PATH = folder_paths.get_full_path("clip", text_encoder_path)
@@ -179,7 +179,7 @@ class DiffusersControlNetLoader:
 
     FUNCTION = "load_controlnet"
 
-    CATEGORY = "Diffusers"
+    CATEGORY = "HyDiT"
 
     def load_controlnet(self, controlnet_path):
         DiffusersControlNetLoader_PATH = folder_paths.get_full_path("controlnet", controlnet_path)
@@ -216,7 +216,7 @@ class DiffusersSchedulerLoader:
 
     FUNCTION = "load_scheduler"
 
-    CATEGORY = "Diffusers"
+    CATEGORY = "HyDiT"
 
     def load_scheduler(self, scheduler_name):
         # Load sampler from factory
@@ -257,7 +257,7 @@ class DiffusersModelMakeup:
 
     FUNCTION = "makeup_pipeline"
 
-    CATEGORY = "Diffusers"
+    CATEGORY = "HyDiT"
 
     def makeup_pipeline(self, pipeline, scheduler, controlnet=None):
         progress_bar_config = {}
@@ -306,7 +306,7 @@ class DiffusersClipTextEncode:
 
     FUNCTION = "concat_embeds"
 
-    CATEGORY = "Diffusers"
+    CATEGORY = "HyDiT"
 
     def concat_embeds(self, positive, negative):
         return (positive, negative,)
@@ -336,7 +336,7 @@ class DiffusersSampler:
 
     FUNCTION = "sample"
 
-    CATEGORY = "Diffusers"
+    CATEGORY = "HyDiT"
 
     def sample(self, maked_pipeline, positive, negative, batch_size, width, height, steps, cfg, seed, control_weight,
                image=None):
