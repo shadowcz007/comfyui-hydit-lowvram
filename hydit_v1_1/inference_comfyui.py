@@ -11,9 +11,9 @@ import torch
 
 from diffusers import schedulers
 from diffusers.models import AutoencoderKL
-from loguru import logger
+# from loguru import logger
 from transformers import BertModel, BertTokenizer
-from transformers.modeling_utils import logger as tf_logger
+# from transformers.modeling_utils import logger as tf_logger
 
 from .constants import SAMPLER_FACTORY, NEGATIVE_PROMPT
 from .diffusion.pipeline import StableDiffusionPipeline
@@ -161,41 +161,41 @@ class End2End(object):
         # Check arguments
         t2i_root_path = Path(models_root_path) / "t2i"
         self.root = t2i_root_path
-        logger.info(f"Got text-to-image model root path: {t2i_root_path}")
+        print(f"Got text-to-image model root path: {t2i_root_path}")
 
         # Set device and disable gradient
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         torch.set_grad_enabled(False)
         # Disable BertModel logging checkpoint info
-        tf_logger.setLevel('ERROR')
+        # tf_logger.setLevel('ERROR')
 
         # ========================================================================
         model_dir = self.root / "model"
 
         # ========================================================================
-        logger.info(f"Loading CLIP Text Encoder...")
+        print(f"Loading CLIP Text Encoder...")
         text_encoder_path = self.root / "clip_text_encoder"
         self.clip_text_encoder = BertModel.from_pretrained(str(text_encoder_path), False, revision=None).to(self.device)
-        logger.info(f"Loading CLIP Text Encoder finished")
+        print(f"Loading CLIP Text Encoder finished")
         #print(self.clip_text_encoder)
 
         # ========================================================================
-        logger.info(f"Loading CLIP Tokenizer...")
+        print(f"Loading CLIP Tokenizer...")
         tokenizer_path = self.root / "tokenizer"
         self.tokenizer = BertTokenizer.from_pretrained(str(tokenizer_path))
-        logger.info(f"Loading CLIP Tokenizer finished")
+        print(f"Loading CLIP Tokenizer finished")
         #print(self.tokenizer)
         #assert(0)
 
         # ========================================================================
-        logger.info(f"Loading T5 Text Encoder and T5 Tokenizer...")
+        print(f"Loading T5 Text Encoder and T5 Tokenizer...")
         t5_text_encoder_path = self.root / 'mt5'
         embedder_t5 = MT5Embedder(t5_text_encoder_path, torch_dtype=torch.float16, max_length=256)
         self.embedder_t5 = embedder_t5
-        logger.info(f"Loading t5_text_encoder and t5_tokenizer finished")
+        print(f"Loading t5_text_encoder and t5_tokenizer finished")
 
         # ========================================================================
-        logger.info(f"Loading VAE...")
+        print(f"Loading VAE...")
         if VAE_PATH:
             vae_path = VAE_PATH
             self.vae = AutoencoderKL.from_single_file(str(vae_path)).to(self.device)
@@ -204,11 +204,11 @@ class End2End(object):
             self.vae = AutoencoderKL.from_pretrained(str(vae_path)).to(self.device)
 
 
-        logger.info(f"Loading VAE finished")
+        print(f"Loading VAE finished")
 
         # ========================================================================
         # Create model structure and load the checkpoint
-        logger.info(f"Building HunYuan-DiT model...")
+        print(f"Building HunYuan-DiT model...")
         #print(self.args.model)
         #print(self.args)
         model_config = HUNYUAN_DIT_CONFIG[self.args.model]
@@ -231,10 +231,10 @@ class End2End(object):
             self.model = HunYuanDiT(self.args,
                                     input_size=latent_size,
                                     **model_config,
-                                    log_fn=logger.info,
+                                    log_fn=print,
                                     ).half().to(self.device)    # Force to use fp16
             # Load model checkpoint
-            logger.info(f"Loading model checkpoint {model_path}...")
+            print(f"Loading model checkpoint {model_path}...")
             state_dict = torch.load(model_path, map_location=lambda storage, loc: storage)
             self.model.load_state_dict(state_dict)
             if LOAR_PATH:
@@ -249,15 +249,15 @@ class End2End(object):
 
         # ========================================================================
         # Build inference pipeline. We use a customized StableDiffusionPipeline.
-        logger.info(f"Loading inference pipeline...")
+        print(f"Loading inference pipeline...")
         #self.pipeline, self.sampler = self.load_sampler()
-        logger.info(f'Loading pipeline finished')
+        print(f'Loading pipeline finished')
 
         # ========================================================================
         self.default_negative_prompt = NEGATIVE_PROMPT
-        logger.info("==================================================")
-        logger.info(f"                Model is ready.                  ")
-        logger.info("==================================================")
+        print("==================================================")
+        print(f"                Model is ready.                  ")
+        print("==================================================")
 
     def load_sampler(self, sampler=None):
         pipeline, sampler = get_pipeline(self.args,
@@ -318,15 +318,15 @@ class End2End(object):
         # ========================================================================
         if width <= 0 or height <= 0:
             raise ValueError(f"`height` and `width` must be positive integers, got height={height}, width={width}")
-        logger.info(f"Input (height, width) = ({height}, {width})")
+        print(f"Input (height, width) = ({height}, {width})")
         if self.infer_mode in ['fa', 'torch']:
             # We must force height and width to align to 16 and to be an integer.
             target_height = int((height // 16) * 16)
             target_width = int((width // 16) * 16)
-            logger.info(f"Align to 16: (height, width) = ({target_height}, {target_width})")
+            print(f"Align to 16: (height, width) = ({target_height}, {target_width})")
         elif self.infer_mode == 'trt':
             target_width, target_height = get_standard_shape(width, height)
-            logger.info(f"Align to standard shape: (height, width) = ({target_height}, {target_width})")
+            print(f"Align to standard shape: (height, width) = ({target_height}, {target_width})")
         else:
             raise ValueError(f"Unknown infer_mode: {self.infer_mode}")
 
