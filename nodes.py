@@ -83,7 +83,10 @@ class DiffusersCheckpointLoader:
     def INPUT_TYPES(s):
         return {"required": {
             "model_name": (folder_paths.get_filename_list("checkpoints"),), 
-            "version": (list(["v1.1", "v1.2"]),), }}
+            "version": (list(["v1.1", "v1.2"]),), 
+            "use_flash_attn":("BOOLEAN", {"default": False},),
+            }}
+           
 
     RETURN_TYPES = ("MODEL",)
 
@@ -91,9 +94,9 @@ class DiffusersCheckpointLoader:
 
     CATEGORY = "HyDiT"
 
-    def load_checkpoint(self, model_name, version):
+    def load_checkpoint(self, model_name, version,use_flash_attn):
         MODEL_PATH = folder_paths.get_full_path("checkpoints", model_name)
-        out = load_checkpoint(MODEL_PATH, version)
+        out = load_checkpoint(MODEL_PATH, version,use_flash_attn)
         return out
 
 

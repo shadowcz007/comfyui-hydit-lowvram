@@ -14,12 +14,11 @@ from torch.utils import checkpoint
 from tqdm import tqdm
 #from transformers.integrations import PeftAdapterMixin
 
-from .attn_layers import Attention, CrossAttention
+from .attn_layers import Attention, FlashCrossMHAModified, FlashSelfMHAModified, CrossAttention
 from .embedders import TimestepEmbedder, PatchEmbed, timestep_embedding
 from .norm_layers import RMSNorm
 from .poolers import AttentionPool
 #from .posemb_layers import get_2d_rotary_pos_embed, get_fill_resize_and_crop
-
 
 def modulate(x, shift, scale):
     return x * (1 + scale.unsqueeze(1)) + shift.unsqueeze(1)

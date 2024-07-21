@@ -42,7 +42,6 @@ class HunYuan_DiT(comfy.supported_models_base.BASE):
         'qk_norm': True,
         'size_cond': None, 
         'use_style_cond': False,
-
     }
 
     unet_config = {}
@@ -53,10 +52,13 @@ class HunYuan_DiT(comfy.supported_models_base.BASE):
 
     dit_conf = Conf(**conf)
 
-    def __init__(self, model_conf):
+    def __init__(self, model_conf,use_flash_attn=False):
         self.unet_config = model_conf.get("unet_config", {})
-        #print(model_conf)
-        print(self.unet_config)
+
+        # 使用 _replace 方法更新属性值
+        self.dit_conf = self.dit_conf._replace(use_flash_attn=use_flash_attn)
+        print('#self.dit_conf',self.dit_conf)
+        # print(self.unet_config)
         self.sampling_settings = model_conf.get("sampling_settings", {})
         self.latent_format = self.latent_format()
         self.unet_config["disable_unet_model_creation"] = True

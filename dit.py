@@ -31,7 +31,7 @@ hydit_conf = {
 
 
 
-def load_checkpoint(model_path, version):
+def load_checkpoint(model_path, version,use_flash_attn=True):
 	if version == "v1.1":
 		from .supported_dit_models_v1_1 import HunYuan_DiT, HYDiT_Model, ModifiedHunYuanDiT
 	elif version == "v1.2":
@@ -56,7 +56,8 @@ def load_checkpoint(model_path, version):
 		unet_dtype = manual_cast_dtype
 
 
-	model_conf = HunYuan_DiT(hydit_conf["G/2"])
+	model_conf = HunYuan_DiT(hydit_conf["G/2"],use_flash_attn)
+	
 	model = HYDiT_Model(
 		model_conf,
 		model_type=comfy.model_base.ModelType.V_PREDICTION,
