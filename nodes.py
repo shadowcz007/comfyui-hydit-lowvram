@@ -16,7 +16,7 @@ from .dit import  load_checkpoint, load_vae
 from .clip import CLIP
 from .hydit_v1_1.modules.controlnet import HunYuanControlNet
 from .hydit_v1_1.modules.models import HUNYUAN_DIT_CONFIG
-from loguru import logger
+# from loguru import logger
 import numpy as np
 from torchvision import transforms as T
 
@@ -54,7 +54,7 @@ class DiffusersPipelineLoader:
 
     @classmethod
     def INPUT_TYPES(s):
-        return {"required": {"pipeline_folder_name": (os.listdir(HUNYUAN_PATH),), },
+        return {"required": {"pipeline_folder_name": (os.listdir(HUNYUAN_PATH) if os.path.exists(HUNYUAN_PATH) else [],), },
                 "optional": {"lora": ("lora_path",), }}
 
     RETURN_TYPES = ("PIPELINE",)
@@ -119,24 +119,24 @@ class DiffusersCheckpointLoader:
 #         return out
 
 
-class DiffusersLoraLoader:
-    def __init__(self):
-        self.tmp_dir = folder_paths.get_temp_directory()
-        self.dtype = torch.float32
+# class DiffusersLoraLoader:
+#     def __init__(self):
+#         self.tmp_dir = folder_paths.get_temp_directory()
+#         self.dtype = torch.float32
 
-    @classmethod
-    def INPUT_TYPES(s):
-        return {"required": {"lora_name": (os.listdir(LORA_PATH),), }}
+#     @classmethod
+#     def INPUT_TYPES(s):
+#         return {"required": {"lora_name": (os.listdir(LORA_PATH) if os.path.exists(LORA_PATH) else "",), }}
 
-    RETURN_TYPES = ("lora_path",)
+#     RETURN_TYPES = ("lora_path",)
 
-    FUNCTION = "load_lora"
+#     FUNCTION = "load_lora"
 
-    CATEGORY = "HyDiT"
+#     CATEGORY = "HyDiT"
 
-    def load_lora(self, lora_name):
-        MODEL_PATH = os.path.join(LORA_PATH, lora_name)
-        return (MODEL_PATH,)
+#     def load_lora(self, lora_name):
+#         MODEL_PATH = os.path.join(LORA_PATH, lora_name)
+#         return (MODEL_PATH,)
 
 
 class DiffusersCLIPLoader:
@@ -148,7 +148,7 @@ class DiffusersCLIPLoader:
     def INPUT_TYPES(s):
         return {"required": {
             "text_encoder_path": (folder_paths.get_filename_list("clip"),),
-            "t5_text_encoder_path": (os.listdir(T5_PATH),), }}
+            "t5_text_encoder_path": (os.listdir(T5_PATH) if os.path.exists(T5_PATH) else "",), }}
 
     RETURN_TYPES = ("CLIP",)
 
@@ -191,7 +191,7 @@ class DiffusersControlNetLoader:
         controlnet = HunYuanControlNet(args,
                                        input_size=latent_size,
                                        **model_config,
-                                       log_fn=logger.info,
+                                    #    log_fn=logger.info,
                                        ).half().to(self.torch_device)
         controlnet_state_dict = torch.load(DiffusersControlNetLoader_PATH)
         controlnet.load_state_dict(controlnet_state_dict)
@@ -391,7 +391,7 @@ NODE_CLASS_MAPPINGS = {
     # "DiffusersVAELoader": DiffusersVAELoader,
     "DiffusersCLIPLoader": DiffusersCLIPLoader,
     "DiffusersControlNetLoader": DiffusersControlNetLoader,
-    "DiffusersLoraLoader": DiffusersLoraLoader
+    # "DiffusersLoraLoader": DiffusersLoraLoader
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
