@@ -5,7 +5,11 @@ import folder_paths
 
 def get_model_dir(m):
     try:
-        return folder_paths.get_folder_paths(m)[0]
+        dir=folder_paths.get_folder_paths(m)[0]
+        if os.path.exists(dir):
+            return dir
+        else:
+            return os.path.join(folder_paths.models_dir, m)
     except:
         return os.path.join(folder_paths.models_dir, m)
     
