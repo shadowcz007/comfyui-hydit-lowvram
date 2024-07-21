@@ -148,7 +148,7 @@ class DiffusersCLIPLoader:
     def INPUT_TYPES(s):
         return {"required": {
             "text_encoder_path": (folder_paths.get_filename_list("clip"),),
-            "t5_text_encoder_path": (os.listdir(T5_PATH) if os.path.exists(T5_PATH) else "",), }}
+            "t5_text_encoder_path": (os.listdir(T5_PATH) if os.path.exists(T5_PATH) else [],), }}
 
     RETURN_TYPES = ("CLIP",)
 
